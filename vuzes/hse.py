@@ -37,18 +37,18 @@ def parse(url) -> list[ConcursPlace]:
         orig=row[-7]
         if not ball:
             ball=-1
-       #print(snils, ball, bvi)
+       #print(snils, score, bvi)
         if not (osoboe or celevoe or otdelnoe):
-            this = ConcursPlace(snils=snils, ball=int(ball), bvi=bvi, prior=prior_other, attestat=orig)
-            #stripped.append([snils, int(ball), bvi, prior_other, orig])
+            this = ConcursPlace(snils=snils, score=int(ball), bvi=bvi, prior=prior_other, attestat=orig)
+            #stripped.append([snils, int(score), bvi, prior_other, orig])
             stripped.append(this)
 
 
-    stripped.sort(key=lambda x: (not x.bvi, -x.ball))
+    stripped.sort(key=lambda x: (not x.bvi, -x.score))
     number = 0
     for x in stripped:
         number += 1
-        x.number = number
+        x.position_number = number
     return stripped
 def discover_links() -> dict[str, str]:
     r=web_requests.get("https://ba.hse.ru/base2023") #https://ba.hse.ru/finlist

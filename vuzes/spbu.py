@@ -37,7 +37,7 @@ def parse(url):
         if not cols: continue
         num,snils,concurs_type,prior,ball,ballege,_,_,_,balldop,dop,comment=cols
         bvi = concurs_type == "Без ВИ"
-        this=ConcursPlace(number=int(num.text), snils=snils.text, ball=int(float(ball.text.replace(',', '.'))), bvi=bvi, prior=int(prior.text))
+        this=ConcursPlace(postition_number=int(num.text), snils=snils.text, score=int(float(ball.text.replace(',', '.'))), bvi=bvi, prior=int(prior.text))
         result.append(this)
 
     return result

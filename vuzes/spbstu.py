@@ -39,6 +39,6 @@ def parse(url):
         ball=row['fullScore']
         orig=row['hasOriginalDocuments']
 
-        this=ConcursPlace(number=num, snils=snils, ball=ball, bvi=bvi, prior=prior, attestat=orig)
+        this=ConcursPlace(postition_number=num, snils=snils, score=ball, bvi=bvi, prior=prior, attestat=orig)
         results.append(this)
     return results

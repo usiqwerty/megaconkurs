@@ -11,6 +11,7 @@ def discover_links(progs, offline=False):
         url=f"https://abitlk.itmo.ru/api/v1/{freaking_api_key}/rating/directions?degree=bachelor&title={name}"
 
         data=json.loads(web_requests.get(url).text)
+        print(data['result'])
         if not data['result']['items']:
             print("itmo discover error")
             continue
@@ -41,7 +42,7 @@ def parse(url):
         ball=x['total_scores']
         prior=x['priority']
         orig=x['is_send_original']
-        this = ConcursPlace(number=number, snils=snils, bvi=True, ball=ball,attestat=orig, prior=prior)
+        this = ConcursPlace(postition_number=number, snils=snils, bvi=True, score=ball, attestat=orig, prior=prior)
         result.append(this)
     for x in unusual+spec+target+general:
         number=x['position']
@@ -49,7 +50,7 @@ def parse(url):
         ball=x['total_scores']
         prior=x['priority']
         orig=x['is_send_original']
-        this = ConcursPlace(number=number, snils=snils, bvi=False, ball=ball,attestat=orig, prior=prior)
+        this = ConcursPlace(postition_number=number, snils=snils, bvi=False, score=ball, attestat=orig, prior=prior)
         result.append(this)
     return result
     """soup= bs(data, 'html.parser')
