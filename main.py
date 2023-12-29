@@ -45,10 +45,7 @@ else:
 	for prog, link in vuzes_links["СПбГУ"].items():
 		clist = vuzes["СПбГУ"].parse(link)
 		all_ratings+=clist
-		#print(link)
-		#for abit in clist:
-		#	print(prog, abit)
-	#a=find_all_with_snils(, all_ratings)
+
 	d = list_to_dict(all_ratings)
 	r = find_all_with_snils(18515614679, d)
 	for abit in r:
