@@ -3,9 +3,9 @@ from typing import override
 
 from bs4 import BeautifulSoup as bs
 
-from classes import ConcursPlace
+from concurs import ConcursPlace
 from datafetcher import web_requests
-from vuzes.vuz import VuzRatingList
+from parsers.vuz import VuzRatingList
 
 
 def generate_url(name):
@@ -33,7 +33,7 @@ class MIPT(VuzRatingList):
 								snils=this[1],
 								bvi=this[2] != '',
 								score=this[3],
-								attestat=this[-4] == "Оригинал",
+								confirmed=this[-4] == "Оригинал",
 								prior=int(this[-3])
 								)
 			res.append(this)

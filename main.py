@@ -4,11 +4,11 @@ print("DOS-ATTACK WARNING")
 from datafetcher import web_requests
 from datafetcher.async_fetcher import get_urls_from_many_hosts
 # exit()
-from vuzes import hse, mipt, spbu, spbstu, itmo
-from vuzes.vuz import VuzRatingList
-
+from parsers import hse, mipt, spbu, spbstu, itmo
+from parsers.vuz import VuzRatingList
+from admission import find_all_with_snils, list_to_dict
 web_requests.load_cache_from_disk()
-vuz_objects: dict[str, VuzRatingList] = {
+vuzes: dict[str, VuzRatingList] = {
 	"ВШЭ": hse.HSE(),
 	"МФТИ": mipt.MIPT(),
 	"СПбГУ": spbu.SPbU(),
@@ -17,29 +17,40 @@ vuz_objects: dict[str, VuzRatingList] = {
 }
 if len(web_requests.cache) < 10:
 	print('Discover')
-	vuzes_links = {name: vuz.discover_links() for name, vuz in vuz_objects.items()}
-	"""		# "ВШЭ": hse.discover_links(),
-		# "МФТИ": mipt.discover_links(),
-		"СПбГУ": spbu.discover_links(),
-		"СПбПУ": spbstu.discover_links(),
-		"ИТМО": itmo.discover_links(),
-	"""
+	vuzes_links = {name: vuz.discover_links() for name, vuz in vuzes.items()}
 	print('Ready')
-	vuzes_links_hash = {k: set(v) for k, v in vuzes_links.items()}
 
-	vuzes_data = {vuz: dict() for vuz in vuzes_links}
+	vuzes_links_hash: dict[str, set[str]] = {k: set(v) for k, v in vuzes_links.items()}
 
-	links_for_all_vuzes = []
-	for name, link_dict in vuzes_links.items():
-		links_for_all_vuzes += list(link_dict.values())
+	# vuzes_data = {vuz: dict() for vuz in vuzes_links}
+
+	links_for_all_vuzes_set = set()
+	for vuz_name, link_dict in vuzes_links_hash.items():
+		links_for_all_vuzes_set.update(link_dict)
+	# links_for_all_vuzes_set += list(link_dict.values())
+
+	links_for_all_vuzes = list(links_for_all_vuzes_set)
 
 	# strange code
-	for link, data in get_urls_from_many_hosts(links_for_all_vuzes, web_requests.get).items():
+	for link, data in get_urls_from_many_hosts(links_for_all_vuzes_set, web_requests.get).items():
 		if link not in web_requests.cache:
 			print("Link was not saved in cache:", link)
-	# web_requests.cache[link]=data
+		# web_requests.cache[link]=data
 
 else:
-	vuzes_links = {name: vuz.discover_links(offline=True) for name, vuz in vuz_objects.items()}
-
+	vuzes_links: dict[str, dict[str, str]] = {name: vuz.discover_links(offline=True) for name, vuz in vuzes.items()}
+	# for vuz_name in vuzes_links:
+	#	print(vuz_name, vuzes_links[vuz_name])
+	all_ratings=[]
+	for prog, link in vuzes_links["СПбГУ"].items():
+		clist = vuzes["СПбГУ"].parse(link)
+		all_ratings+=clist
+		#print(link)
+		#for abit in clist:
+		#	print(prog, abit)
+	#a=find_all_with_snils(, all_ratings)
+	d = list_to_dict(all_ratings)
+	r = find_all_with_snils(18515614679, d)
+	for abit in r:
+		print(abit)
 # web_requests.save_cache_to_disk()

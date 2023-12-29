@@ -2,9 +2,9 @@ import json
 import time
 from typing import override
 
-from classes import ConcursPlace
+from concurs import ConcursPlace
 from datafetcher import web_requests
-from vuzes.vuz import VuzRatingList
+from parsers.vuz import VuzRatingList
 
 freaking_api_key = "9e2eee80b266b31c8d65f1dd3992fa26eb8b4c118ca9633550889a8ff2cac429"
 
@@ -18,8 +18,9 @@ class ITMO(VuzRatingList):
 			url = f"https://abitlk.itmo.ru/api/v1/{freaking_api_key}/rating/directions?degree=bachelor&title={program}"
 
 			data = json.loads(web_requests.get(url).text)
-			print(data['result'])
+			#
 			if not data['result']['items']:
+				print(data)
 				print("itmo discover error")
 				continue
 			prog = data['result']['items'][0]['competitive_group_id']
@@ -49,7 +50,7 @@ class ITMO(VuzRatingList):
 			ball = x['total_scores']
 			prior = x['priority']
 			orig = x['is_send_original']
-			this = ConcursPlace(postition_number=number, snils=snils, bvi=True, score=ball, attestat=orig, prior=prior)
+			this = ConcursPlace(postition_number=number, snils=snils, bvi=True, score=ball, confirmed=orig, prior=prior)
 			result.append(this)
 		for x in unusual + spec + target + general:
 			number = x['position']
@@ -57,6 +58,6 @@ class ITMO(VuzRatingList):
 			ball = x['total_scores']
 			prior = x['priority']
 			orig = x['is_send_original']
-			this = ConcursPlace(postition_number=number, snils=snils, bvi=False, score=ball, attestat=orig, prior=prior)
+			this = ConcursPlace(postition_number=number, snils=snils, bvi=False, score=ball, confirmed=orig, prior=prior)
 			result.append(this)
 		return result

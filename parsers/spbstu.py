@@ -2,9 +2,9 @@ import json
 import time
 from typing import override
 
-from classes import ConcursPlace
+from concurs import ConcursPlace
 from datafetcher import web_requests
-from vuzes.vuz import VuzRatingList
+from parsers.vuz import VuzRatingList
 
 
 class SPbSTU(VuzRatingList):
@@ -47,6 +47,6 @@ class SPbSTU(VuzRatingList):
 			ball = row['fullScore']
 			orig = row['hasOriginalDocuments']
 
-			this = ConcursPlace(postition_number=num, snils=snils, score=ball, bvi=bvi, prior=prior, attestat=orig)
+			this = ConcursPlace(postition_number=num, snils=snils, score=ball, bvi=bvi, prior=prior, confirmed=orig)
 			results.append(this)
 		return results

@@ -1,4 +1,4 @@
-from classes import ConcursPlace
+from concurs import ConcursPlace
 
 
 class VuzRatingList:

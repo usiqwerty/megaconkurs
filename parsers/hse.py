@@ -4,9 +4,9 @@ from typing import override
 import pandas
 from bs4 import BeautifulSoup as bs
 
-from classes import ConcursPlace
+from concurs import ConcursPlace
 from datafetcher import web_requests
-from vuzes.vuz import VuzRatingList
+from parsers.vuz import VuzRatingList
 
 
 def generate_url():
@@ -47,7 +47,7 @@ class HSE(VuzRatingList):
 				ball = -1
 			# print(snils, score, bvi)
 			if not (osoboe or celevoe or otdelnoe):
-				this = ConcursPlace(snils=snils, score=int(ball), bvi=bvi, prior=prior_other, attestat=orig)
+				this = ConcursPlace(snils=snils, score=int(ball), bvi=bvi, prior=prior_other, confirmed=orig)
 				# stripped.append([snils, int(score), bvi, prior_other, orig])
 				stripped.append(this)
 
