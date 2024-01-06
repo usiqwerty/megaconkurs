@@ -7,7 +7,11 @@ from datafetcher.async_fetcher import get_urls_from_many_hosts
 from parsers import hse, mipt, spbu, spbstu, itmo
 from parsers.vuz import VuzRatingList
 from admission import find_all_with_snils, list_to_dict
+import database
 web_requests.load_cache_from_disk()
+database.start()
+dblen=database.count_rows()
+print(f"DB contains {dblen} rows")
 vuzes: dict[str, VuzRatingList] = {
 	"ВШЭ": hse.HSE(),
 	"МФТИ": mipt.MIPT(),
@@ -37,17 +41,24 @@ if len(web_requests.cache) < 10:
 			print("Link was not saved in cache:", link)
 		# web_requests.cache[link]=data
 
-else:
+elif dblen<10:
 	vuzes_links: dict[str, dict[str, str]] = {name: vuz.discover_links(offline=True) for name, vuz in vuzes.items()}
 	# for vuz_name in vuzes_links:
 	#	print(vuz_name, vuzes_links[vuz_name])
-	all_ratings=[]
-	for prog, link in vuzes_links["СПбГУ"].items():
-		clist = vuzes["СПбГУ"].parse(link)
-		all_ratings+=clist
+	#all_ratings=[]
+	vuz_name="СПбГУ"
+	print(f"Parsing {vuz_name}...")
+	for prog, link in vuzes_links[vuz_name].items():
+		clist = vuzes[vuz_name].parse(link)
+		for entry in clist:
+			database.append_entry(entry)
+		#all_ratings+=clist
 
-	d = list_to_dict(all_ratings)
-	r = find_all_with_snils(18515614679, d)
-	for abit in r:
-		print(abit)
+	#d = list_to_dict(all_ratings)
+	#r = find_all_with_snils(18515614679, d)
+	#for abit in r:
+	#	print(abit)
 # web_requests.save_cache_to_disk()
+r = database.find_all_by_snils(18515614679)
+for x in r:
+	print(x)

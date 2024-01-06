@@ -20,8 +20,8 @@ class ITMO(VuzRatingList):
 			data = json.loads(web_requests.get(url).text)
 			#
 			if not data['result']['items']:
-				print(data)
-				print("itmo discover error")
+				#print(data)
+				#print("itmo discover error")
 				continue
 			prog = data['result']['items'][0]['competitive_group_id']
 			link = f"https://abit.itmo.ru/_next/data/AEhS1JbONUKUlFJoZiZEa/ru/rating/bachelor/budget/{prog}.json?degree=bachelor&financing=budget&id={prog}"
