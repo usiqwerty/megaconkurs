@@ -42,17 +42,29 @@ def start():
 
 	# Создаем объект сессии из вышесозданной фабрики Session
 	session = Session()
+def sql_to_pyobj(sql_obj):
+	pyobj = ConcursPlace()
 
-
-def append_entry(entry: ConcursPlace):
-	global session
-	new_record = ConcursPlaceSQL()
-	for attr in dir(entry):
+	for attr in dir(pyobj):
 		if not attr.startswith('__'):
 			if attr == "subjects":
-				setattr(new_record, attr, str(getattr(entry, attr)))
+				setattr(pyobj, attr, str(getattr(sql_obj, attr)))
 			else:
-				setattr(new_record, attr, getattr(entry, attr))
+				setattr(pyobj, attr, getattr(sql_obj, attr))
+	return pyobj
+def pyobj_to_sql(pyobj):
+	new_record = ConcursPlaceSQL()
+	for attr in dir(pyobj):
+		if not attr.startswith('__'):
+			if attr == "subjects":
+				setattr(new_record, attr, str(getattr(pyobj, attr)))
+			else:
+				setattr(new_record, attr, getattr(pyobj, attr))
+	return new_record
+def append_entry(entry: ConcursPlace):
+	global session
+
+	new_record = pyobj_to_sql(entry)
 	session.add(new_record)
 	session.commit()
 
@@ -70,4 +82,6 @@ def find_all_by_snils(snils: int):
 
 	query = select(tb).where(tb.c.snils == snils)
 
-	return session.execute(query).fetchall()
+	res=session.query(ConcursPlaceSQL).from_statement(query) #.execute(query).fetchall()
+
+	return [sql_to_pyobj(x) for x in res]

@@ -36,7 +36,7 @@ class ConcursPlace:
 		@param subjects:
 		"""
 		self.position_number = postition_number
-		self.snils = int(snils.replace(' ', '').replace('-', ''))
+		self.snils = int((snils or "0").replace(' ', '').replace('-', '')) or None
 		self.bvi = bvi
 		self.prior = prior
 		self.confirmed = confirmed
