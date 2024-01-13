@@ -1,17 +1,16 @@
-# TODO:
-print("DATA IS NOT SAVED AFTER DOWNLOADING")
-print("DOS-ATTACK WARNING")
+import database
 from datafetcher import web_requests
 from datafetcher.async_fetcher import get_urls_from_many_hosts
-
 from parsers import hse, mipt, spbu, spbstu, itmo
 from parsers.vuz import VuzRatingList
 
-import database
+# TODO:
+print("DATA IS NOT SAVED AFTER DOWNLOADING")
+print("DOS-ATTACK WARNING")
 
 web_requests.load_cache_from_disk()
 database.start()
-dblen=database.count_rows()
+dblen = database.count_rows()
 print(f"DB contains {dblen} rows")
 vuzes: dict[str, VuzRatingList] = {
 	"ВШЭ": hse.HSE(),
@@ -36,11 +35,11 @@ if len(web_requests.cache) < 10:
 	for link, data in get_urls_from_many_hosts(links_for_all_vuzes_set, web_requests.get).items():
 		if link not in web_requests.cache:
 			print("Link was not saved in cache:", link)
-		# web_requests.cache[link]=data
+	# web_requests.cache[link]=data
 
-elif dblen<10:
+elif dblen < 10:
 	vuzes_links: dict[str, dict[str, str]] = {name: vuz.discover_links(offline=True) for name, vuz in vuzes.items()}
-	vuz_name="СПбГУ"
+	vuz_name = "СПбГУ"
 	print(f"Parsing {vuz_name}...")
 	for prog, link in vuzes_links[vuz_name].items():
 		clist = vuzes[vuz_name].parse(link)
