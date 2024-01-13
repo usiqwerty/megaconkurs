@@ -37,9 +37,9 @@ class ConcursPlace:
 
 	def __init__(self, snils: str = None, postition_number: int = None, bvi: bool = None, prior: int = None,
 	             confirmed: bool = None, score: int = None, degree: int = None,
-	             payment: int = PAYMENT_BUDGET, subjects: dict[str, int] = None, code: str = None):
+	             payment: int = PAYMENT_BUDGET, subjects: dict[str, int] = None, code: str = None, vuz: str = None):
 		"""
-		@param code:
+
 		@param snils: СНИЛС абитуриента (будет преобразован из строки в число)
 		@param postition_number: Позиция в рейтинге
 		@param bvi: Поступает БВИ
@@ -49,7 +49,10 @@ class ConcursPlace:
 		@param degree: Уровень поступления
 		@param payment: Форма оплаты обучения
 		@param subjects:
+		@param code: Код специальности
+		@param vuz: Название вуза
 		"""
+		self.vuz = vuz
 		self.position_number = postition_number
 		self.snils = int((snils or "0").replace(' ', '').replace('-', '')) or None
 		self.bvi = bvi

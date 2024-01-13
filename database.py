@@ -1,3 +1,18 @@
+"""
+	This file is part of megaconcurs.
+
+	megaconcurs is free software: you can redistribute it and/or modify it under the terms of the
+	GNU General Public License as published by the Free Software Foundation, either version 2 of the License,
+	or (at your option) any later version.
+
+	megaconcurs is distributed in the hope that it will be useful, but WITHOUT ANY
+	WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+	General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along with
+	Foobar. If not, see <https://www.gnu.org/licenses/>.
+"""
+
 import sqlalchemy.orm
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, MetaData
 from sqlalchemy import select
@@ -26,6 +41,7 @@ class ConcursPlaceSQL(DeclBase):
 	payment = Column("payment", Integer)
 	subjects = Column("subjects", String)
 	code = Column("code", String)
+	vuz = Column("vuz", String)
 
 	def __repr__(self):
 		return f"SQL {self.position_number}@{self.code}: {self.snils} ({self.score}) p{self.prior} {'БВИ' if self.bvi else ''} {'ОРИГ' if self.confirmed else ''} {self.subjects}"
@@ -42,6 +58,8 @@ def start():
 
 	# Создаем объект сессии из вышесозданной фабрики Session
 	session = Session()
+
+
 def sql_to_pyobj(sql_obj):
 	pyobj = ConcursPlace()
 
@@ -52,6 +70,8 @@ def sql_to_pyobj(sql_obj):
 			else:
 				setattr(pyobj, attr, getattr(sql_obj, attr))
 	return pyobj
+
+
 def pyobj_to_sql(pyobj):
 	new_record = ConcursPlaceSQL()
 	for attr in dir(pyobj):
@@ -61,6 +81,8 @@ def pyobj_to_sql(pyobj):
 			else:
 				setattr(new_record, attr, getattr(pyobj, attr))
 	return new_record
+
+
 def append_entry(entry: ConcursPlace):
 	global session
 
@@ -78,10 +100,10 @@ def count_rows():
 
 def find_all_by_snils(snils: int):
 	DeclBase.metadata: MetaData
-	tb:sqlalchemy.Table = DeclBase.metadata.tables["concurs"]
+	tb: sqlalchemy.Table = DeclBase.metadata.tables["concurs"]
 
 	query = select(tb).where(tb.c.snils == snils)
 
-	res=session.query(ConcursPlaceSQL).from_statement(query) #.execute(query).fetchall()
+	res = session.query(ConcursPlaceSQL).from_statement(query)  # .execute(query).fetchall()
 
 	return [sql_to_pyobj(x) for x in res]
