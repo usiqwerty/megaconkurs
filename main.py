@@ -46,7 +46,7 @@ elif dblen < 10:
 		for entry in clist:
 			database.append_entry(entry)
 
-r = database.find_all_by_snils(18515614679)
+r = database.find_all_by_program_extended("38.03.01") #database.find_all_by_snils(18515614679)
 for x in r:
 	print(x)
 # web_requests.save_cache_to_disk()

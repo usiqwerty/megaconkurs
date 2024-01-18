@@ -65,6 +65,8 @@ def sql_to_pyobj(sql_obj):
 
 	for attr in dir(pyobj):
 		if not attr.startswith('__'):
+			if attr == "other_programs":
+				continue
 			if attr == "subjects":
 				setattr(pyobj, attr, str(getattr(sql_obj, attr)))
 			else:
@@ -76,6 +78,8 @@ def pyobj_to_sql(pyobj):
 	new_record = ConcursPlaceSQL()
 	for attr in dir(pyobj):
 		if not attr.startswith('__'):
+			if attr == "other_programs":
+				continue
 			if attr == "subjects":
 				setattr(new_record, attr, str(getattr(pyobj, attr)))
 			else:
@@ -98,12 +102,34 @@ def count_rows():
 		return 0
 
 
-def find_all_by_snils(snils: int):
-	DeclBase.metadata: MetaData
-	tb: sqlalchemy.Table = DeclBase.metadata.tables["concurs"]
+DeclBase.metadata: MetaData
+tb: sqlalchemy.Table = DeclBase.metadata.tables["concurs"]
 
+
+def find_all_by_snils(snils: int):
 	query = select(tb).where(tb.c.snils == snils)
 
 	res = session.query(ConcursPlaceSQL).from_statement(query)  # .execute(query).fetchall()
 
 	return [sql_to_pyobj(x) for x in res]
+
+
+def find_all_by_program(program_code: str):
+	"""Конкурсный список по коду программы"""
+	query = select(tb).where(tb.c.code == program_code)
+	res = session.query(ConcursPlaceSQL).from_statement(query)  # .execute(query).fetchall()
+	return [sql_to_pyobj(x) for x in res]
+
+
+def find_all_by_program_extended(program_code: str):
+	"""Конкурсный список по коду программы, подгружает другие заявления абитуриентов"""
+	query = select(tb).where(tb.c.code == program_code)
+	res = session.query(ConcursPlaceSQL).from_statement(query)  # .execute(query).fetchall()
+
+	result = []
+	for x in res:
+		abit = sql_to_pyobj(x)
+		if abit.other_programs is None:
+			abit.other_programs = find_all_by_snils(abit.snils)
+		result.append(abit)
+	return result
