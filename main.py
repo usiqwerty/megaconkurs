@@ -4,9 +4,6 @@ from datafetcher.async_fetcher import get_urls_from_many_hosts
 from parsers import hse, mipt, spbu, spbstu, itmo
 from parsers.vuz import VuzRatingList
 
-# TODO:
-print("DATA IS NOT SAVED AFTER DOWNLOADING")
-print("DOS-ATTACK WARNING")
 
 web_requests.load_cache_from_disk()
 database.start()
