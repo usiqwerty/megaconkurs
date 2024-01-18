@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup as bs
 
 from concurs import ConcursPlace, PAYMENT_BUDGET, PAYMENT_CONTRACT, VUZ_SPBU
 from datafetcher import web_requests
+from errors import ParsingError
 from parsers.vuz import VuzRatingList
 
 
@@ -63,7 +64,8 @@ class SPbU(VuzRatingList):
 			payment_type = PAYMENT_BUDGET
 		elif "Договорная" in info_block.text:
 			payment_type = PAYMENT_CONTRACT
-
+		else:
+			raise ParsingError(f"Не распознан тип оплаты обучения для {program_code} СПбГУ")
 		for row in table.find_all('tr'):
 			cols = row.find_all('td')
 			if not cols: continue
