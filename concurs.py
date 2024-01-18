@@ -20,7 +20,8 @@ PAYMENT_BUDGET = 1
 PAYMENT_CONTRACT = 2
 PAYMENT_TARGETED = 3
 
-
+VUZ_SPBU = 1
+VUZ_ITMO = 2
 class ConcursPlace:
 	"""
 	Позиция в конкурсном списке
@@ -37,7 +38,7 @@ class ConcursPlace:
 
 	def __init__(self, snils: str = None, postition_number: int = None, bvi: bool = None, prior: int = None,
 	             confirmed: bool = None, score: int = None, degree: int = None,
-	             payment: int = PAYMENT_BUDGET, subjects: dict[str, int] = None, code: str = None, vuz: str = None):
+	             payment: int = PAYMENT_BUDGET, subjects: dict[str, int] = None, code: str = None, vuz: int = None):
 		"""
 
 		@param snils: СНИЛС абитуриента (будет преобразован из строки в число)

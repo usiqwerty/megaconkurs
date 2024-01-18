@@ -41,7 +41,7 @@ class ConcursPlaceSQL(DeclBase):
 	payment = Column("payment", Integer)
 	subjects = Column("subjects", String)
 	code = Column("code", String)
-	vuz = Column("vuz", String)
+	vuz = Column("vuz", Integer)
 
 	def __repr__(self):
 		return f"SQL {self.position_number}@{self.code}: {self.snils} ({self.score}) p{self.prior} {'БВИ' if self.bvi else ''} {'ОРИГ' if self.confirmed else ''} {self.subjects}"
@@ -114,16 +114,16 @@ def find_all_by_snils(snils: int):
 	return [sql_to_pyobj(x) for x in res]
 
 
-def find_all_by_program(program_code: str):
+def find_all_by_program(program_code: str, vuz: int):
 	"""Конкурсный список по коду программы"""
-	query = select(tb).where(tb.c.code == program_code)
+	query = select(tb).where(tb.c.code == program_code).where(tb.c.vuz == vuz)
 	res = session.query(ConcursPlaceSQL).from_statement(query)  # .execute(query).fetchall()
 	return [sql_to_pyobj(x) for x in res]
 
 
-def find_all_by_program_extended(program_code: str):
+def find_all_by_program_extended(program_code: str, vuz: int):
 	"""Конкурсный список по коду программы, подгружает другие заявления абитуриентов"""
-	query = select(tb).where(tb.c.code == program_code)
+	query = select(tb).where(tb.c.code == program_code).where(tb.c.vuz == vuz)
 	res = session.query(ConcursPlaceSQL).from_statement(query)  # .execute(query).fetchall()
 
 	result = []

@@ -3,7 +3,7 @@ from typing import override
 
 from bs4 import BeautifulSoup as bs
 
-from concurs import ConcursPlace, PAYMENT_BUDGET, PAYMENT_CONTRACT
+from concurs import ConcursPlace, PAYMENT_BUDGET, PAYMENT_CONTRACT, VUZ_SPBU
 from datafetcher import web_requests
 from parsers.vuz import VuzRatingList
 
@@ -93,7 +93,8 @@ class SPbU(VuzRatingList):
 			                           payment=payment_type,
 			                           confirmed=confirmed,
 			                           subjects=score_values,
-			                           code=program_code))
+			                           code=program_code,
+			                           vuz=VUZ_SPBU))
 
 		return result
 
