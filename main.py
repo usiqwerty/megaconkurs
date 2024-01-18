@@ -45,5 +45,5 @@ elif dblen < 10:
 
 r = database.find_all_by_program_extended("38.03.01", VUZ_SPBU)
 for x in r:
-	print(x.vuz)
+	print(x)
 # web_requests.save_cache_to_disk()
