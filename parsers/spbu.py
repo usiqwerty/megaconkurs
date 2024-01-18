@@ -22,7 +22,22 @@ def parse_program_code(line):
 	if not r:
 		return
 	return r.groups()[0]
-
+def extract_program_code(info_block):
+	program_code = ""
+	for line in info_block.text.split('\n'):
+		c = parse_program_code(line)
+		if c:
+			program_code = c
+	return program_code
+def extract_subjects(info_block):
+	subjects = {}
+	for info_line in info_block.find_all("b"):
+		if info_line:
+			subject = parse_subjects(info_line.text)
+			if subject and subject[1] != "Творческий":
+				subjects[subject[0]] = subject[1]
+	subjects = list(subjects.values())
+	return subjects
 
 class SPbU(VuzRatingList):
 	@override
@@ -54,9 +69,9 @@ class SPbU(VuzRatingList):
 		table = soup.find('table')
 		info_block = soup.find("p")
 
-		subjects = self.extract_subjects(info_block)
+		subjects = extract_subjects(info_block)
 
-		program_code = self.extract_program_code(info_block)
+		program_code = extract_program_code(info_block)
 
 		result = []
 
@@ -99,21 +114,3 @@ class SPbU(VuzRatingList):
 			                           vuz=VUZ_SPBU))
 
 		return result
-
-	def extract_program_code(self, info_block):
-		program_code = ""
-		for line in info_block.text.split('\n'):
-			c = parse_program_code(line)
-			if c:
-				program_code = c
-		return program_code
-
-	def extract_subjects(self, info_block):
-		subjects = {}
-		for info_line in info_block.find_all("b"):
-			if info_line:
-				subject = parse_subjects(info_line.text)
-				if subject and subject[1] != "Творческий":
-					subjects[subject[0]] = subject[1]
-		subjects = list(subjects.values())
-		return subjects

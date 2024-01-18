@@ -22,6 +22,11 @@ PAYMENT_TARGETED = 3
 
 VUZ_SPBU = 1
 VUZ_ITMO = 2
+
+
+# TODO: не общий конкурс (но он не учитывается при подсчёте проходных баллов)
+
+
 class ConcursPlace:
 	"""
 	Позиция в конкурсном списке
@@ -64,7 +69,7 @@ class ConcursPlace:
 		self.payment = payment
 		self.subjects = subjects
 		self.code = code
-		self.other_programs: list = None
+		self.other_programs: list | None = None
 
 	def __repr__(self):
-		return f"{self.position_number}@{self.code}: {self.snils} ({self.score}) p{self.prior} {'БВИ' if self.bvi else ''} {'ОРИГ' if self.confirmed else ''} {self.subjects}; {len(self.other_programs) if self.other_programs!=None else None}"
+		return f"{self.position_number}@{self.code}: {self.snils} ({self.score}) p{self.prior} {'БВИ' if self.bvi else ''} {'ОРИГ' if self.confirmed else ''} {self.subjects}; {len(self.other_programs) if self.other_programs is not None else None}"

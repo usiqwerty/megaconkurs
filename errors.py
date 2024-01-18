@@ -1,8 +1,8 @@
 class ParsingError(Exception):
-	def __init__(self, *args):
+	def __init__(self, msg=None):
 		self.msg = ""
-		if args:
-			self.msg = args[0]
+		if msg:
+			self.msg = msg
 
 	def __repr__(self):
 		return f"Error while parsing{': '+self.msg if self.msg else ''}"

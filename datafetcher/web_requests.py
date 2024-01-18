@@ -12,7 +12,7 @@ delay = 30  # seconds
 
 
 class FakeResponse:
-	"Имитирует response от модуля requests"
+	"""Имитирует response от модуля requests"""
 	text: str
 
 	def __init__(self, text):

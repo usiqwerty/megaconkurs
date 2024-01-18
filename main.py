@@ -3,7 +3,7 @@ from datafetcher import web_requests
 from datafetcher.async_fetcher import get_urls_from_many_hosts
 from parsers import hse, mipt, spbu, spbstu, itmo
 from parsers.vuz import VuzRatingList
-from concurs import VUZ_SPBU, VUZ_ITMO
+from concurs import VUZ_SPBU
 
 web_requests.load_cache_from_disk()
 database.start()
@@ -43,7 +43,7 @@ elif dblen < 10:
 		for entry in clist:
 			database.append_entry(entry)
 
-r = database.find_all_by_program_extended("38.03.01", VUZ_ITMO) #database.find_all_by_snils(18515614679)
+r = database.find_all_by_program_extended("38.03.01", VUZ_SPBU)
 for x in r:
 	print(x.vuz)
 # web_requests.save_cache_to_disk()
