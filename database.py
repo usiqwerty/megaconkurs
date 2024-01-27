@@ -133,3 +133,7 @@ def find_all_by_program_extended(program_code: str, vuz: int):
 			abit.other_programs = find_all_by_snils(abit.snils)
 		result.append(abit)
 	return result
+def get_all_programs_by_vuz(vuz):
+	query = select(tb).where(tb.c.vuz ==vuz)
+	res = session.query(ConcursPlaceSQL.code).distinct()
+	return [x[0] for x in res]

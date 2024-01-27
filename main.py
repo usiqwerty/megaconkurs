@@ -1,9 +1,11 @@
+from typing import NamedTuple
+
 import database
+from concurs import VUZ_SPBU
 from datafetcher import web_requests
 from datafetcher.async_fetcher import get_urls_from_many_hosts
 from parsers import hse, mipt, spbu, spbstu, itmo
 from parsers.vuz import VuzRatingList
-from concurs import VUZ_SPBU
 
 web_requests.load_cache_from_disk()
 database.start()
@@ -32,7 +34,7 @@ if len(web_requests.cache) < 10:
 	for link, data in get_urls_from_many_hosts(links_for_all_vuzes_set, web_requests.get).items():
 		if link not in web_requests.cache:
 			print("Link was not saved in cache:", link)
-	# web_requests.cache[link]=data
+# web_requests.cache[link]=data
 
 elif dblen < 10:
 	vuzes_links: dict[str, dict[str, str]] = {name: vuz.discover_links(offline=True) for name, vuz in vuzes.items()}
@@ -43,7 +45,27 @@ elif dblen < 10:
 		for entry in clist:
 			database.append_entry(entry)
 
-r = database.find_all_by_program_extended("38.03.01", VUZ_SPBU)
-for x in r:
-	print(x)
+
+# r = database.find_all_by_program_extended("38.03.01", VUZ_SPBU)
+# for x in r:
+#	print(x)
+
 # web_requests.save_cache_to_disk()
+def find_all_vuzes():
+	return [VUZ_SPBU]
+
+
+Vuz = NamedTuple("vuz", [("name", str), ("code", str), ("full_name", str)])
+
+
+def get_vuz_info(vuz):
+	if vuz == VUZ_SPBU:
+		return Vuz("СПбГУ", "spbu", "Санкт-передфыощшфывофы")
+
+
+def get_rating(vuz, program):
+	return database.find_all_by_program_extended(program, vuz)
+
+
+def get_vuz_programs(vuz):
+	return database.get_all_programs_by_vuz(VUZ_SPBU)
