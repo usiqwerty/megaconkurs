@@ -51,14 +51,16 @@ elif dblen < 10:
 #	print(x)
 
 # web_requests.save_cache_to_disk()
-def find_all_vuzes():
-	return [VUZ_SPBU]
-
-
 Vuz = NamedTuple("vuz", [("name", str), ("code", str), ("full_name", str)])
+def find_all_vuzes():
+	return [Vuz("СПбГУ",VUZ_SPBU, "Сакнто ываыва")]
 
 
-def get_vuz_info(vuz):
+
+
+
+def get_vuz_info(vuz: int):
+	print(f"looking for {vuz} vuz")
 	if vuz == VUZ_SPBU:
 		return Vuz("СПбГУ", "spbu", "Санкт-передфыощшфывофы")
 

@@ -69,7 +69,7 @@ class ConcursPlace:
 		self.payment = payment
 		self.subjects = subjects
 		self.code = code
-		self.other_programs: list | None = None
+		self.other_programs: list[ConcursPlace] | None = None
 
 	def __repr__(self):
 		return f"{self.position_number}@{self.code}: {self.snils} ({self.score}) p{self.prior} {'БВИ' if self.bvi else ''} {'ОРИГ' if self.confirmed else ''} {self.subjects}; {len(self.other_programs) if self.other_programs is not None else None}"

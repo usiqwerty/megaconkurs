@@ -110,8 +110,10 @@ def find_all_by_snils(snils: int):
 	query = select(tb).where(tb.c.snils == snils)
 
 	res = session.query(ConcursPlaceSQL).from_statement(query)  # .execute(query).fetchall()
-
-	return [sql_to_pyobj(x) for x in res]
+	if res:
+		return [sql_to_pyobj(x) for x in res]
+	else:
+		return None
 
 
 def find_all_by_program(program_code: str, vuz: int):
