@@ -1,5 +1,4 @@
 import re
-from typing import override
 
 from bs4 import BeautifulSoup as bs
 
@@ -22,6 +21,8 @@ def parse_program_code(line):
 	if not r:
 		return
 	return r.groups()[0]
+
+
 def extract_program_code(info_block):
 	program_code = ""
 	for line in info_block.text.split('\n'):
@@ -29,6 +30,8 @@ def extract_program_code(info_block):
 		if c:
 			program_code = c
 	return program_code
+
+
 def extract_subjects(info_block):
 	subjects = {}
 	for info_line in info_block.find_all("b"):
@@ -39,8 +42,8 @@ def extract_subjects(info_block):
 	subjects = list(subjects.values())
 	return subjects
 
+
 class SPbU(VuzRatingList):
-	@override
 	def discover_links(self, offline=False):
 		url = "https://cabinet.spbu.ru/Lists/1k_EntryLists/index_comp_groups.html"
 		r = web_requests.get(url)
@@ -61,7 +64,6 @@ class SPbU(VuzRatingList):
 			name = name.findNext("h3")
 		return results
 
-	@override
 	def parse(self, url):
 		data = web_requests.get(url).text.encode('latin1').decode('utf-8')
 

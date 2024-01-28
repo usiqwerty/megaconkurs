@@ -49,12 +49,13 @@ def api_get_rating():
 	rating_id = args["rating_id"]
 
 	rating = [{
-		"pos":rt.position_number,
-		"snils":rt.snils,
+		"pos": rt.position_number,
+		"snils": rt.snils,
 		"score": rt.score,
 		"confirmed": rt.confirmed,
 		"bvi": rt.bvi,
-		"other": [{"code":x.code, "confirmed":x.confirmed, "vuz":x.vuz, "position":x.position_number} for x in rt.other_programs]
+		"other": [{"code": x.code, "confirmed": x.confirmed, "vuz": x.vuz, "position": x.position_number} for x in
+		          rt.other_programs]
 	} for rt in get_rating(vuz, rating_id)]
 
 	return {"vuz": vuz, "code": rating_id, "rating": rating}

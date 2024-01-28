@@ -12,15 +12,18 @@
 	You should have received a copy of the GNU General Public License along with
 	Foobar. If not, see <https://www.gnu.org/licenses/>.
 """
+from abc import abstractmethod
 
 from concurs import ConcursPlace
 
 
 class VuzRatingList:
+	@abstractmethod
 	def discover_links(self, offline=False) -> dict[str, str]:
 		"""Получить ссылки на рейтинги по программам"""
 		raise NotImplementedError
 
+	@abstractmethod
 	def parse(self, url: str) -> list[ConcursPlace]:
 		"""Получить конкурсный список по URL страницы"""
 		raise NotImplementedError

@@ -45,18 +45,16 @@ elif dblen < 10:
 		for entry in clist:
 			database.append_entry(entry)
 
-
 # r = database.find_all_by_program_extended("38.03.01", VUZ_SPBU)
 # for x in r:
 #	print(x)
 
 # web_requests.save_cache_to_disk()
 Vuz = NamedTuple("vuz", [("name", str), ("code", str), ("full_name", str)])
+
+
 def find_all_vuzes():
-	return [Vuz("СПбГУ",VUZ_SPBU, "Сакнто ываыва")]
-
-
-
+	return [Vuz("СПбГУ", VUZ_SPBU, "Сакнто ываыва")]
 
 
 def get_vuz_info(vuz: str):
