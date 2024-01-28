@@ -116,14 +116,14 @@ def find_all_by_snils(snils: int):
 		return None
 
 
-def find_all_by_program(program_code: str, vuz: int):
+def find_all_by_program(program_code: str, vuz: str):
 	"""Конкурсный список по коду программы"""
 	query = select(tb).where(tb.c.code == program_code).where(tb.c.vuz == vuz)
 	res = session.query(ConcursPlaceSQL).from_statement(query)  # .execute(query).fetchall()
 	return [sql_to_pyobj(x) for x in res]
 
 
-def find_all_by_program_extended(program_code: str, vuz: int):
+def find_all_by_program_extended(program_code: str, vuz: str):
 	"""Конкурсный список по коду программы, подгружает другие заявления абитуриентов"""
 	query = select(tb).where(tb.c.code == program_code).where(tb.c.vuz == vuz)
 	res = session.query(ConcursPlaceSQL).from_statement(query)  # .execute(query).fetchall()

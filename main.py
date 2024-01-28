@@ -59,7 +59,7 @@ def find_all_vuzes():
 
 
 
-def get_vuz_info(vuz: int):
+def get_vuz_info(vuz: str):
 	print(f"looking for {vuz} vuz")
 	if vuz == VUZ_SPBU:
 		return Vuz("СПбГУ", "spbu", "Санкт-передфыощшфывофы")

@@ -29,7 +29,7 @@ def api_get_vuz_info():
 	args = request.args
 	if "vuz" not in args:
 		return {'error': "Bad Request"}, 400
-	vuz = get_vuz_info(int(args["vuz"]))
+	vuz = get_vuz_info(args["vuz"])
 	return {"code": vuz.code, "name": vuz.full_name}
 
 

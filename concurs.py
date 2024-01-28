@@ -20,8 +20,8 @@ PAYMENT_BUDGET = 1
 PAYMENT_CONTRACT = 2
 PAYMENT_TARGETED = 3
 
-VUZ_SPBU = 1
-VUZ_ITMO = 2
+VUZ_SPBU = "spbu"
+VUZ_ITMO = "itmo"
 
 
 # TODO: не общий конкурс (но он не учитывается при подсчёте проходных баллов)
