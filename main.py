@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-import database
+import db_programs, db_vuzes
 from concurs import VUZ_SPBU
 from datafetcher import web_requests
 from datafetcher.async_fetcher import get_urls_from_many_hosts
@@ -8,8 +8,9 @@ from parsers import hse, mipt, spbu, spbstu, itmo
 from parsers.vuz import VuzRatingList
 
 web_requests.load_cache_from_disk()
-database.start()
-dblen = database.count_rows()
+db_programs.start()
+db_vuzes.start()
+dblen = db_programs.count_rows()
 print(f"DB contains {dblen} rows")
 vuzes: dict[str, VuzRatingList] = {
 	"ВШЭ": hse.HSE(),
@@ -43,29 +44,32 @@ elif dblen < 10:
 	for prog, link in vuzes_links[vuz_name].items():
 		clist = vuzes[vuz_name].parse(link)
 		for entry in clist:
-			database.append_entry(entry)
+			db_programs.append_entry(entry)
 
 # r = database.find_all_by_program_extended("38.03.01", VUZ_SPBU)
 # for x in r:
 #	print(x)
 
 # web_requests.save_cache_to_disk()
-Vuz = NamedTuple("vuz", [("name", str), ("code", str), ("full_name", str)])
+Vuz = NamedTuple("vuz", [("name", str), ("code", str), ("full_name", str), ("description", str)])
 
 
 def find_all_vuzes():
-	return [Vuz("СПбГУ", VUZ_SPBU, "Сакнто ываыва")]
+
+	return [Vuz(x.shortname, x.code, x.fullname, x.description) for x in db_vuzes.get_all_vuzes()]
 
 
 def get_vuz_info(vuz: str):
 	print(f"looking for {vuz} vuz")
-	if vuz == VUZ_SPBU:
-		return Vuz("СПбГУ", "spbu", "Санкт-передфыощшфывофы")
+	r:db_vuzes.VuzSQL = db_vuzes.get_vuz_info(vuz)[0]
+	return Vuz(r.shortname, r.code, r.fullname, r.description)
+	#if vuz == VUZ_SPBU:
+	#	return Vuz("СПбГУ", "spbu", "Санкт-передфыощшфывофы")
 
 
 def get_rating(vuz, program):
-	return database.find_all_by_program_extended(program, vuz)
+	return db_programs.find_all_by_program_extended(program, vuz)
 
 
 def get_vuz_programs(vuz):
-	return database.get_all_programs_by_vuz(VUZ_SPBU)
+	return db_programs.get_all_programs_by_vuz(VUZ_SPBU)
