@@ -132,7 +132,7 @@ def find_all_by_program_extended(program_code: str, vuz: str):
 	for x in res:
 		abit = sql_to_pyobj(x)
 		if abit.other_programs is None:
-			abit.other_programs = find_all_by_snils(abit.snils)
+			abit.other_programs = [x for x in find_all_by_snils(abit.snils) if not (x.code == program_code and x.vuz == vuz)]
 		result.append(abit)
 	return result
 
