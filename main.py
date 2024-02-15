@@ -51,18 +51,19 @@ elif dblen < 10:
 #	print(x)
 
 # web_requests.save_cache_to_disk()
-Vuz = NamedTuple("vuz", [("name", str), ("code", str), ("full_name", str), ("description", str)])
+VuzAttribute = NamedTuple("VuzAttribute", [('key', str), ('val', str|int)])
+Vuz = NamedTuple("vuz", [("name", str), ("code", str), ("full_name", str), ("description", str), ("attributes", str)])
 
 
 def find_all_vuzes():
 
-	return [Vuz(x.shortname, x.code, x.fullname, x.description) for x in db_vuzes.get_all_vuzes()]
+	return [Vuz(x.shortname, x.code, x.fullname, x.description, x.attributes) for x in db_vuzes.get_all_vuzes()]
 
 
 def get_vuz_info(vuz: str):
 	print(f"looking for {vuz} vuz")
 	r:db_vuzes.VuzSQL = db_vuzes.get_vuz_info(vuz)[0]
-	return Vuz(r.shortname, r.code, r.fullname, r.description)
+	return Vuz(r.shortname, r.code, r.fullname, r.description, r.attributes)
 	#if vuz == VUZ_SPBU:
 	#	return Vuz("СПбГУ", "spbu", "Санкт-передфыощшфывофы")
 

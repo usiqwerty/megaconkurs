@@ -30,7 +30,7 @@ def api_get_vuz_info():
 	if "vuz" not in args:
 		return {'error': "Bad Request"}, 400
 	vuz = get_vuz_info(args["vuz"])
-	return {"code": vuz.code, "name": vuz.full_name, "desc": vuz.description}
+	return {"code": vuz.code, "name": vuz.full_name, "desc": vuz.description, "attributes": vuz.attributes}
 
 
 @app.route('/api/get_all_vuzes', methods=["GET"])

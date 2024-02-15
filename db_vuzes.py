@@ -14,7 +14,7 @@
 """
 
 import sqlalchemy.orm
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, MetaData
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, MetaData, JSON
 from sqlalchemy import select
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -34,7 +34,7 @@ class VuzSQL(DeclBase):
 	code = Column("code", String)
 	fullname = Column("fullname", String)
 	description = Column("description", String)
-
+	attributes = Column("attributes", String)
 	def __repr__(self):
 		return f"SQL {self.shortname}({self.code}): {self.fullname} "
 
